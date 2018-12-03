@@ -64,3 +64,18 @@ One idea implied by the visual is to "render" all the shapes, and place an `X` w
 There's probably some simple math that can solve it too but I might as well write more code to learn more Go constructs.
 
 See `main.go`.
+
+
+## Part Two
+
+Amidst the chaos, you notice that exactly one claim doesn't overlap by even a single square inch of fabric with any other claim. If you can somehow draw attention to it, maybe the Elves will be able to make Santa's suit after all!
+
+For example, in the claims above, only claim 3 is intact after all claims are made.
+
+What is the ID of the only claim that doesn't overlap?
+
+### Solution
+
+Can we just draw each claim again and see if there's a conflict anywhere?
+
+Yep! See `main.go#HasConflict`.

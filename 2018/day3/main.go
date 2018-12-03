@@ -16,9 +16,9 @@ type Claim struct {
 	height int
 }
 
-func (claim Claim) Draw(fabric *[10000][10000]byte) {
-	for x := claim.left + 1; x <= claim.left+claim.width; x++ {
-		for y := claim.top + 1; y <= claim.top+claim.height; y++ {
+func (claim Claim) Draw(fabric *[1000][1000]byte) {
+	for x := claim.left; x < claim.left+claim.width; x++ {
+		for y := claim.top; y < claim.top+claim.height; y++ {
 			if fabric[x][y] != 'C' && fabric[x][y] != 'X' {
 				fabric[x][y] = 'C'
 			} else {
@@ -26,6 +26,18 @@ func (claim Claim) Draw(fabric *[10000][10000]byte) {
 			}
 		}
 	}
+}
+
+func (claim Claim) HasConflict(fabric *[1000][1000]byte) bool {
+	for x := claim.left; x < claim.left+claim.width; x++ {
+		for y := claim.top; y < claim.top+claim.height; y++ {
+			if fabric[x][y] == 'X' {
+				return true
+			}
+		}
+	}
+
+	return false
 }
 
 func parseClaim(line string) Claim {
@@ -41,9 +53,11 @@ func parseClaim(line string) Claim {
 }
 
 func main() {
-	var fabric [10000][10000]byte
+	var claims []Claim
+	var fabric [1000][1000]byte
 	for _, line := range readLines() {
 		claim := parseClaim(line)
+		claims = append(claims, claim)
 		claim.Draw(&fabric)
 	}
 
@@ -57,4 +71,10 @@ func main() {
 	}
 
 	fmt.Println("Square inches of fabric are within two or more claims: ", conflicts)
+	for _, claim := range claims {
+		hasConflict := claim.HasConflict(&fabric)
+		if !hasConflict {
+			fmt.Printf("Claim #%d has no conflict!\n", claim.id)
+		}
+	}
 }
